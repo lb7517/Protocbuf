@@ -1,0 +1,45 @@
+注意: 配置环境变量 D:\softWork\protoc-3.8.0-win64exe\bin 到系统path，才能直接用protoc命令，否则要到当前文件夹用./protoc
+windows下使用protoc.exe是注意:
+./protoc --java_out=./ Person.proto  此命令是.proto文件要和protoc.exe同目录  或
+.\protoc -I=C:\Users\lb\Desktop --java_out=C:\Users\lb\Desktop  C:\Users\lb\Desktop\Person.proto
+
+
+#  在终端输入下列命令进行编译
+protoc -I=$SRC_DIR --xxx_out=$DST_DIR   $SRC_DIR/addressbook.proto
+# 参数说明
+# 1. $SRC_DIR：指定需要编译的.proto文件目录 (如没有提供则使用当前目录)
+# 2. --xxx_out：xxx根据需要生成代码的类型进行设置
+	"""
+	对于 Java ，xxx =  java ，即 -- java_out
+	对于 C++ ，xxx =  cpp ，即 --cpp_out
+	对于 Python，xxx =  python，即 --python_out
+	"""
+# 3. $DST_DIR ：编译后代码生成的目录 (通常设置与$SRC_DIR相同)
+# 4. 最后的路径参数：需要编译的.proto 文件的具体路径
+
+
+
+Person.proto文件格式:
+syntax = "proto2";
+
+package com.demo.msg;
+option java_outer_classname = "PersonBean";
+message Person {
+    required string name = 1;
+    required int32 age = 2;
+    optional string gender = 3;
+	enum PhoneType {
+    	MOBILE = 0;
+    	HOME = 1;
+    	WORK = 2;
+  	}
+    message PhoneNumber {
+    	required string number = 1;
+    	optional PhoneType type = 2 [default = HOME];
+  	}
+  	repeated PhoneNumber phones = 4;
+}
+message AddressBook {
+  repeated Person people = 1;  //repeated有数组的功能出来的是List
+}
+
